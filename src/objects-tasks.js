@@ -124,8 +124,16 @@ function makeImmutable(obj) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+function makeWord(lettersObject) {
+  const temp = Object.entries(lettersObject);
+  const wordLength = Object.values(lettersObject).flat().length;
+  const res = new Array(wordLength);
+  temp.forEach(([char, position]) => {
+    position.forEach((index) => {
+      res[index] = char;
+    });
+  });
+  return res.join('');
 }
 
 /**
@@ -142,8 +150,42 @@ function makeWord(/* lettersObject */) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  let count25 = 0;
+  let count50 = 0;
+  let res = true;
+  queue.forEach((el) => {
+    switch (el) {
+      case 25:
+        count25 += 1;
+        res = true;
+        break;
+      case 50:
+        if (count25 < 1) {
+          res = false;
+        } else {
+          count25 -= 1;
+          count50 += 1;
+          res = true;
+        }
+        break;
+      case 100:
+        if (count50 >= 1 && count25 >= 1) {
+          count50 -= 1;
+          count25 -= 1;
+          res = true;
+        } else if (count25 >= 3) {
+          count25 -= 3;
+          res = true;
+        } else {
+          res = false;
+        }
+        break;
+      default:
+        break;
+    }
+  });
+  return res;
 }
 
 /**
@@ -159,8 +201,12 @@ function sellTickets(/* queue */) {
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
+  this.getArea = function getArea() {
+    return this.width * this.height;
+  };
 }
 
 /**
@@ -173,8 +219,8 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { height: 10, width: 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
 
 /**
@@ -218,8 +264,12 @@ function fromJSON(/* proto, json */) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((a, b) => {
+    if (a.country > b.country) return 1;
+    if (a.country < b.country) return -1;
+    return a.city > b.city ? 1 : -1;
+  });
 }
 
 /**
